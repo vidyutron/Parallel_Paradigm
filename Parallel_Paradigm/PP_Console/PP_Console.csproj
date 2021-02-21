@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Async_Await\" />
+    <Folder Include="Data_Synchronization\" />
+    <Folder Include="Parallel_Collections\" />
+    <Folder Include="Task_Programming\" />
+  </ItemGroup>
+
+</Project>
