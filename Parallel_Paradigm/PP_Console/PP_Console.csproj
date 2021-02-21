@@ -7,9 +7,10 @@
 
   <ItemGroup>
     <Folder Include="Async_Await\" />
-    <Folder Include="Data_Synchronization\" />
-    <Folder Include="Parallel_Collections\" />
-    <Folder Include="Task_Programming\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
   </ItemGroup>
 
 </Project>
