@@ -1,4 +1,5 @@
 ﻿using PP_Console.Common;
+using PP_Console.Data_Synchronization;
 using PP_Console.Task_Programming;
 using System;
 
@@ -16,11 +17,21 @@ namespace PP_Console
 
         private static void Runner()
         {
-            //
+            // GENERIC - BASICS OF TASK PROGRAMMING
             //var g_tpl = new Generic_TPL();
 
+            // GENERIC - CANCELLATIONs IN TPL
+            //var g_canellation = new Cancellation_TPL();
+
+            // GENRIC - EXCEPTIONS HANDLING IN TPL
+            //var g_exceptions = new Exceptions_TPL();
+
+
+            /*------------------------------------------------*/
+
             //
-            var g_canellation = new Cancellation_TPL();
+            var sync_criticalSection = new CriticalSections();
+            Console.WriteLine("Back to Runner");
         }
     }
 }
