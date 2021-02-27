@@ -27,6 +27,15 @@ namespace PP_Console.Data_Synchronization.Context
             if (amount > 0)
                 Balance -= amount;
         }
+
+        public void Transfer(BadBankAccount recepient, int amount)
+        {
+            if (amount > 0)
+            {
+                Balance -= amount;
+                recepient.Balance += amount;
+            }
+        }
     }
 
     /// <summary>
@@ -59,4 +68,6 @@ namespace PP_Console.Data_Synchronization.Context
             }
         }
     }
+
+
 }

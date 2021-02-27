@@ -29,8 +29,19 @@ namespace PP_Console
 
             /*------------------------------------------------*/
 
+            // SYNCHRONIZATION AND LOCKING - USING CRITICAL SECTION
+            //var sync_criticalSection = new CriticalSections();
+
+            // SYNCHRONIZATION AND LOCKING - MUTEX
+            //var sync_mutex = new MutexSync();
+
+            // SYNCHRONIZATION AND LOCKING - READ(ER)WRITE(ER) LOCK
+            //var sync_readerWriter = new ReaderWriter_Lock();
+
+            /*------------------------------------------------*/
+
             //
-            var sync_criticalSection = new CriticalSections();
+
             Console.WriteLine("Back to Runner");
         }
     }
