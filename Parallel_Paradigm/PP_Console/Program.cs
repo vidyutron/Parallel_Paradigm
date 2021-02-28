@@ -1,5 +1,7 @@
-﻿using PP_Console.Common;
+﻿using BenchmarkDotNet.Running;
+using PP_Console.Common;
 using PP_Console.Data_Synchronization;
+using PP_Console.Parallel_Collections;
 using PP_Console.Task_Programming;
 using System;
 
@@ -38,9 +40,16 @@ namespace PP_Console
             // SYNCHRONIZATION AND LOCKING - READ(ER)WRITE(ER) LOCK
             //var sync_readerWriter = new ReaderWriter_Lock();
 
+            // SYNCHRONIZATION AND LOCKING - SEMAPHORE
+            //var sync_sempahore = new Semaphore();
+
             /*------------------------------------------------*/
 
             //
+            //var parallel_loop = new Parallel_For();
+
+            //
+            var produce_consume = new Producer_Consumer();
 
             Console.WriteLine("Back to Runner");
         }
