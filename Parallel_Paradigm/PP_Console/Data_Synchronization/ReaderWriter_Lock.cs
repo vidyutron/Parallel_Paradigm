@@ -7,28 +7,57 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Data_Synchronization
 {
+    /// <summary>
+    /// Performing multi-threaded data synchronization using READER WRITER LOCK 
+    /// </summary>
     public class ReaderWriter_Lock
     {
+        /// <summary>
+        /// Specific kind of lock which blocks certain setter and getter accesses 
+        /// defined with Enter() and Exit() pattern where anything within them will 
+        /// be granted read or write access across the threads and avoid deadlocks and
+        /// unwanted updates.
+        /// </summary>
+        public ReaderWriterLockSlim _padlock   = new ReaderWriterLockSlim();
+        public Random _rand                    = new Random();
 
-        // Specific kind of lock which blocks certain setter and getter accesses 
-        // defined with Enter() and Exit() pattern where anything within them will 
-        // be granted read or write access across the threads and avoid deadlocks and
-        // unwanted updates
-        //
-        ReaderWriterLockSlim _padlock = new ReaderWriterLockSlim();
-        Random _rand = new Random();
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ReaderWriter_Lock()
         {
             Moderator();
         }
 
-        private void Moderator()
+        /// <summary>
+        /// Reader Writer controller method
+        /// </summary>
+        public void Moderator()
         {
             LockerJob();
             UpgradeLockerJob();
         }
 
-        private void LockerJob()
+        /// <summary>
+        /// The Enter() and Exit() pattern as mentioned above
+        /// during this even other thread won't be able to access
+        /// the variable {x} until 1 seconds is passed(because of thread sleep)
+        /// <code>
+        ///  _padlock.EnterReadLock();
+        ///  Console.WriteLine($"Entered read lock, x= {x}");
+        ///  Thread.Sleep(1000);
+        /// </code>
+        /// 
+        /// 
+        /// Here(in mddle of Enter and Exit section) in case we now want 
+        /// to get Write Lock, we can't do that. that will throw exception 
+        /// because this operation by design is prone to deadlocks.
+        /// <code>
+        /// _padlock.ExitReadLock();
+        /// Console.WriteLine($"Exited read lock, x= {x}");
+        /// </code>
+        /// </summary>
+        public void LockerJob()
         {
             var x = 0;
             var tasks = new List<Task>();
@@ -43,10 +72,9 @@ namespace PP_Console.Data_Synchronization
                     Console.WriteLine($"Entered read lock, x= {x}");
                     Thread.Sleep(1000);
 
-                    // Here(In mddle of Enter and Exit section) in case we now want 
+                    // Here(in mddle of Enter and Exit section) in case we now want 
                     // to get Write Lock, we can't do that. that will throw exception 
                     // because this operation by design is prone to deadlocks.
-
                     _padlock.ExitReadLock();
                     Console.WriteLine($"Exited read lock, x= {x}");
                 }));
@@ -82,7 +110,17 @@ namespace PP_Console.Data_Synchronization
             Console.WriteLine("");
         }
 
-        private void UpgradeLockerJob()
+        /// <summary>
+        /// To overcome the shortcomings of regular lock, specially in dynamic
+        /// scenarios where we may want to write in middle of read lock or vice-versa
+        /// for such cases we have Upgradable locks which can be modifed in middle of 
+        /// exisitng locking section.
+        /// <code>
+        /// _padlock.EnterUpgradeableReadLock();
+        /// </code>
+        /// 
+        /// </summary>
+        public void UpgradeLockerJob()
         {
             var x = 0;
             var tasks = new List<Task>();

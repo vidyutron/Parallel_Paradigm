@@ -7,6 +7,9 @@ using System;
 
 namespace PP_Console
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
@@ -16,7 +19,10 @@ namespace PP_Console
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
         }
-
+        /// <summary>
+        /// Staring point of the program, where all other pieces are called and
+        /// referred to.
+        /// </summary>
         private static void Runner()
         {
             // GENERIC - BASICS OF TASK PROGRAMMING
@@ -41,7 +47,7 @@ namespace PP_Console
             //var sync_readerWriter = new ReaderWriter_Lock();
 
             // SYNCHRONIZATION AND LOCKING - SEMAPHORE
-            //var sync_sempahore = new Semaphore();
+            //var sync_semaphore = new Semaphore();
 
             /*------------------------------------------------*/
 

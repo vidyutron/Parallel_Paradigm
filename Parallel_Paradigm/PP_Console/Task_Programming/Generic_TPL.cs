@@ -7,19 +7,32 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Task_Programming
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Generic_TPL:IParallelize
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
         public Generic_TPL()
         {
             Moderator();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Moderator()
         {
             ParallelForm();
         }
 
+        /// <summary>
+        /// Generic Task Creation - Generic Constructor Method is mandatory
+        /// Generic Task Creation - Generic Factory Method is not mandatory
+        /// 
+        /// </summary>
         public void ParallelForm()
         {
             // Generic Task Creation - Contsructor Method <T> is mandatory
@@ -37,15 +50,21 @@ namespace PP_Console.Task_Programming
             Console.WriteLine($"Length of task1 processed item is {task1.Result}");
             // This is blocking operation as well
             Console.WriteLine($"Length of task2 processed item is {task2.Result}");
-
-
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void NonParallelForm()
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         private int TextLength(object o)
         {
             Console.WriteLine($"\nTask with id {Task.CurrentId} processing object {o}");

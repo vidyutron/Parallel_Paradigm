@@ -7,27 +7,42 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Task_Programming
 {
+    /// <summary>
+    /// Demostrating exceptions and its handling in Thread Parallel Library.
+    /// </summary>
     public class Exceptions_TPL : IParallelize
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Exceptions_TPL()
         {
             Moderator();
         }
+
+        /// <summary>
+        /// Controller Method
+        /// </summary>
         public void Moderator()
         {
             ParallelForm();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void NonParallelForm()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Taks used in the demonstration of handling exceptions
+        /// originating from multiple task which are different in 
+        /// in their implementation.
+        /// </summary>
         public void ParallelForm()
         {
-            // Taks used in the demonstration of handling exceptions
-            // originating from multiple task which are different in 
-            // in their implementation
             var task1 = Task.Factory.StartNew(() =>
             {
                 throw new InvalidOperationException("Can't do this here")
@@ -58,7 +73,6 @@ namespace PP_Console.Task_Programming
             }
 
             // try-catch inside a try-catch, why ???
-
             // outer try-catch is draining left over exceptions which were unacaught from
             // inner try-cath because of one reason or another
             try

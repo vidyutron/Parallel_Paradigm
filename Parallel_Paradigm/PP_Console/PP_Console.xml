@@ -1,0 +1,503 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PP_Console</name>
+    </assembly>
+    <members>
+        <member name="T:PP_Console.Common.Randomizor">
+            <summary>
+            Utility class for generating randmised numeric and alpha-numeric strings 
+            </summary>
+        </member>
+        <member name="M:PP_Console.Common.Randomizor.AlphaNumericSet(System.Int32)">
+            <summary>
+            Extension method for generating alphanumeric string of given length-len 
+            </summary>
+            <param name="len"></param>
+            <returns>alphanumeric string of size [len] </returns>
+        </member>
+        <member name="M:PP_Console.Common.Randomizor.AlphaSet(System.Int32)">
+            <summary>
+            Extension method for generating alphabetic string of given length-len 
+            </summary>
+            <param name="len"></param>
+            <returns>alphabetical string of size [len] </returns>
+        </member>
+        <member name="M:PP_Console.Common.Randomizor.NumericSet(System.Int32)">
+            <summary>
+            Extension method for generating numeric string of given length-len 
+            </summary>
+            <param name="len"></param>
+            <returns>numeric string of size [len] </returns>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.Context.BadBankAccount">
+            <summary>
+             Example of an object which deposits and withdraws amount form 
+             account of an user, but does not checks for locking an operation
+             in case multiple threads starts accessing the same instance of bank
+             account, this could lead to anomaly in balances
+            </summary>
+        </member>
+        <member name="P:PP_Console.Data_Synchronization.Context.BadBankAccount.Balance">
+            <summary>
+            Balance properties
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Context.BadBankAccount.Deposit(System.Double)">
+            <summary>
+            Add [amount] to bank account
+            </summary>
+            <param name="amount"></param>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Context.BadBankAccount.Withdraw(System.Double)">
+            <summary>
+            Substract [amount] from bank account
+            </summary>
+            <param name="amount"></param>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Context.BadBankAccount.Transfer(PP_Console.Data_Synchronization.Context.BadBankAccount,System.Int32)">
+            <summary>
+            Transfer amount form one bank account to another
+            </summary>
+            <param name="recepient"></param>
+            <param name="amount"></param>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.Context.LockedBankAccount">
+            <summary>
+             Example of an object which deposits and withdraws amount form 
+             account of an user, while locking an operation during the time its
+             accessd from multiple threads, this prevents multiple threads to  
+             abnormally enter and exit any particular operation.
+            </summary>
+        </member>
+        <member name="F:PP_Console.Data_Synchronization.Context.LockedBankAccount.padlock">
+            <summary>
+             Simple lock object
+            </summary>
+        </member>
+        <member name="P:PP_Console.Data_Synchronization.Context.LockedBankAccount.Balance">
+            <summary>
+            Balance
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Context.LockedBankAccount.Deposit(System.Double)">
+            <summary>
+            Add [amount] to bank account
+            </summary>
+            <param name="amount"></param>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Context.LockedBankAccount.Withdraw(System.Double)">
+            <summary>
+            Substract [amount] to bank account
+            </summary>
+            <param name="amount"></param>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.Context.BankAccountLedger">
+            <summary>
+            Ledger POCO class for the BankAccount object
+            </summary>
+        </member>
+        <member name="P:PP_Console.Data_Synchronization.Context.BankAccountLedger.Account">
+            <summary>
+            Bank Account object of an user
+            </summary>
+        </member>
+        <member name="P:PP_Console.Data_Synchronization.Context.BankAccountLedger.AccountMutex">
+            <summary>
+            Bank Account Mutex for thread safe operation
+            </summary>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.CriticalSections">
+            <summary>
+            Performing multi-threaded data synchronization using CRITICAL SECTIONS 
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.CriticalSections.#ctor">
+            <summary>
+            Critical Section - Constructor
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.CriticalSections.Moderator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.CriticalSections.NonAtomicTransaction">
+            <summary>
+            Demonstrating the effect of thread unsafe operations through a 
+            thread unsafe class/interation
+            
+            Due to core bank object being unsafe, net 
+            deposit and withdrawal may not cancel each other and
+            net balance most of the times will be non-zero
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.CriticalSections.AtomicTransaction">
+            <summary>
+            Demonstrating the operation of object which supports basic 
+            thread locking mechanism using padlock mechanism.
+            
+            Due to core bank object being padlock safe, the net 
+            deposit and withdrawal will cancel each other and
+            net balance will be always zero.
+            </summary>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.MutexSync">
+            <summary>
+            Performing multi-threaded data synchronization using MUTEX 
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.MutexSync.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.MutexSync.Moderator">
+            <summary>
+            Controller Method
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.MutexSync.IntraMutexedTransactions">
+            <summary>
+            What is mutex?
+            
+            Mutex is a synchronization primitive that grants exclusive access to the shared resource to only one thread, until released.
+            
+            Create a ledge object which is, a combination of "BadBank"(thread unsafe class) account and its related mutex.
+            Here mutex facilitates modificaiton of even, out-of-sync operations what we perform in bad bank example.
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.MutexSync.InterMutexedTransactions">
+            <summary>
+            Little bit, different from above behviour where combinatioin of two operations where being carried out in one account.
+            Here we will be doing some operation between two different instances and try to maintain the exclusive lock per thread.
+            </summary>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.ReaderWriter_Lock">
+            <summary>
+            Performing multi-threaded data synchronization using READER WRITER LOCK 
+            </summary>
+        </member>
+        <member name="F:PP_Console.Data_Synchronization.ReaderWriter_Lock._padlock">
+            <summary>
+            Specific kind of lock which blocks certain setter and getter accesses 
+            defined with Enter() and Exit() pattern where anything within them will 
+            be granted read or write access across the threads and avoid deadlocks and
+            unwanted updates.
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.ReaderWriter_Lock.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.ReaderWriter_Lock.Moderator">
+            <summary>
+            Reader Writer controller method
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.ReaderWriter_Lock.LockerJob">
+            <summary>
+            The Enter() and Exit() pattern as mentioned above
+            during this even other thread won't be able to access
+            the variable {x} until 1 seconds is passed(because of thread sleep)
+            <code>
+             _padlock.EnterReadLock();
+             Console.WriteLine($"Entered read lock, x= {x}");
+             Thread.Sleep(1000);
+            </code>
+            
+            
+            Here(in mddle of Enter and Exit section) in case we now want 
+            to get Write Lock, we can't do that. that will throw exception 
+            because this operation by design is prone to deadlocks.
+            <code>
+            _padlock.ExitReadLock();
+            Console.WriteLine($"Exited read lock, x= {x}");
+            </code>
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.ReaderWriter_Lock.UpgradeLockerJob">
+            <summary>
+            To overcome the shortcomings of regular lock, specially in dynamic
+            scenarios where we may want to write in middle of read lock or vice-versa
+            for such cases we have Upgradable locks which can be modifed in middle of 
+            exisitng locking section.
+            <code>
+            _padlock.EnterUpgradeableReadLock();
+            </code>
+            
+            </summary>
+        </member>
+        <member name="T:PP_Console.Data_Synchronization.Semaphore">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Semaphore.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Semaphore.Moderator">
+            <summary>
+            Semaphore Controller method
+            </summary>
+        </member>
+        <member name="M:PP_Console.Data_Synchronization.Semaphore.SemaphoreTaskCoordination">
+            <summary>
+            A mechanism to coordinate tasks, spread across different threads and
+            control processing-'n' tasks at a time(concurrently).
+            SemaphoreSlim: Params - Intial Count of requests , Total count of requests
+            which could be processed concurrently.
+            
+            
+            Release count reduced by 1, ie, the concurrent request which could
+            go past this stage will be reduced, this means that if release count is
+            released equals or below zero the requests won't go beyond this stage
+            example - In our case intial count is 2, hence first 2 threads(offcourse randomly)
+            would go beyond this point and print Processing task - x but once, limit is reached-0 
+            it will stop processing the next line, semaphore tracker will activated for a 
+            particular thread at this point, such that once some n count of semaphores are 
+            released, processing could resume for those n tasks from this point
+            <code>semaphore.Wait();</code>
+            
+            Here we are releasing n semaphore, and that many tasks would be continue from the point of 
+            sempahore.wait(), hence that many concurrent tasks will be processed
+            Here basically we are increasing the Release count by 2, such that, that many
+            requests could be processed from the point of .Wait();
+            <code>semaphore.Release(2);</code>
+            </summary>
+        </member>
+        <member name="T:PP_Console.Parallel_Collections.Parallel_For">
+            <summary>
+            Different operations on parallelized loop
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.Moderator">
+            <summary>
+            Parallel for controller method.
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.SimpleParallelInvoke">
+            <summary>
+            Demonsrating Parallel Invokation
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.SimpleParallelFor">
+            <summary>
+            Demonstrating use of simple parallel for :
+            
+            Step-size is always 1
+            if we want some other step size, then we can modify the foreach and use it as required
+            <code>
+            Parallel.For(1, 11, a =>
+               {
+                   Console.WriteLine($"Value : {a * 21}");
+               });
+            </code>
+            
+            Customizing the step-size for parallel for with foreach traversing over custom
+            function, which in our case is Range()
+            <code>
+            Parallel.ForEach(Range(1, 101, 5), a => { Console.WriteLine(a);});
+            </code>
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.CancellableParallelFor">
+            <summary>
+            Demonstrating Cancellable Parallel For
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.ThreadLocalStorage">
+            <summary>
+            Problem Statement - How can we sum in parallel loop
+            maybe by interlocking every iteration such that, 
+            we can avoid any race condition.
+            But, isn't interlocking every step will add unecessary overhead and cause delays
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.ThreadPartionining">
+            <summary>
+            create a partition using 0=> starting pint, count=>exclusive end range
+            ,10000 => range size
+            Combine the parallel operation with chunks to oprimise the performance 
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Parallel_For.SingleThreadSum">
+            <summary>
+            Single threaded sum.
+            </summary>
+        </member>
+        <member name="T:PP_Console.Parallel_Collections.Producer_Consumer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:PP_Console.Parallel_Collections.Producer_Consumer._messages">
+            <summary>
+            Blocking Collection 
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Producer_Consumer.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Producer_Consumer.Moderator">
+            <summary>
+            Producer Consumer Controller Method
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Producer_Consumer.BlockingCollections">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Producer_Consumer.ProduceAndConsume">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Producer_Consumer.RunProducer">
+            <summary>
+            Demonstrate Producer of theaded messages
+            </summary>
+        </member>
+        <member name="M:PP_Console.Parallel_Collections.Producer_Consumer.RunConsumer">
+            <summary>
+            Demonstrate Consumer of theaded messages
+            </summary>
+        </member>
+        <member name="T:PP_Console.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Program.Runner">
+            <summary>
+            Staring point of the program, where all other pieces are called and
+            referred to.
+            </summary>
+        </member>
+        <member name="T:PP_Console.Task_Programming.Cancellation_TPL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.Moderator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.NonParallelForm">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.ParallelForm">
+            <summary>
+            Should be currently wrapped in try-catch block, will throw unhandled exception 
+            <code>ExplicitCancellation();</code>
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.SoftCancellation">
+            <summary>
+            Soft cancellation - simply breaking out of the current 
+            programmtic flow, using existing means like break, continue etc.
+            knowledge of cancellation will be suppressed internally and 
+            it won't be known,outside of the task block 
+            *******  Not preferred way of handlig cancellation ********
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.ExplicitCancellation">
+            <summary>
+            An pipeline function which is invoked as soon as a cancellation is requested.
+            
+            
+            A shorthand to throw an exception when cancellation has been requested
+            <code>
+            token.ThrowIfCancellationRequested();
+            Console.WriteLine(++i);
+            </code>
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Cancellation_TPL.CompositeCancellation">
+            <summary>
+            Demonstrate composite cancellation 
+            </summary>
+        </member>
+        <member name="T:PP_Console.Task_Programming.Exceptions_TPL">
+            <summary>
+            Demostrating exceptions and its handling in Thread Parallel Library.
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Exceptions_TPL.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Exceptions_TPL.Moderator">
+            <summary>
+            Controller Method
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Exceptions_TPL.NonParallelForm">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Exceptions_TPL.ParallelForm">
+            <summary>
+            Taks used in the demonstration of handling exceptions
+            originating from multiple task which are different in 
+            in their implementation.
+            </summary>
+        </member>
+        <member name="T:PP_Console.Task_Programming.Generic_TPL">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Generic_TPL.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Generic_TPL.Moderator">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Generic_TPL.ParallelForm">
+            <summary>
+            Generic Task Creation - Generic Constructor Method is mandatory
+            Generic Task Creation - Generic Factory Method is not mandatory
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Generic_TPL.NonParallelForm">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:PP_Console.Task_Programming.Generic_TPL.TextLength(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="o"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

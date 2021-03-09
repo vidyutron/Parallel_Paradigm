@@ -10,15 +10,21 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Parallel_Collections
 {
+    /// <summary>
+    /// Different operations on parallelized loop
+    /// </summary>
     public class Parallel_For
     {
         private const int SUM_LIMIT = 1001;
+        /// <summary>
+        /// 
+        /// </summary>
         public Parallel_For()
         {
             Moderator();
         }
 
-        public static IEnumerable<int> Range(int start, int end, int step)
+        private static IEnumerable<int> Range(int start, int end, int step)
         {
             for (int i = start; i < end; i+=step)
             {
@@ -26,7 +32,10 @@ namespace PP_Console.Parallel_Collections
             }
         }
 
-        private void Moderator()
+        /// <summary>
+        /// Parallel for controller method.
+        /// </summary>
+        public void Moderator()
         {
             SimpleParallelInvoke();
             Console.WriteLine("");
@@ -41,7 +50,10 @@ namespace PP_Console.Parallel_Collections
             SingleThreadSum();
         }
 
-        private void SimpleParallelInvoke()
+        /// <summary>
+        /// Demonsrating Parallel Invokation
+        /// </summary>
+        public void SimpleParallelInvoke()
         {
             var a = new Action(() => Console.WriteLine($"Action's current task = {Task.CurrentId}"));
             var b = new Action(() => Console.WriteLine($"Action's current task = {Task.CurrentId}"));
@@ -50,7 +62,25 @@ namespace PP_Console.Parallel_Collections
             Parallel.Invoke(a, b, c);
         }
 
-        private void SimpleParallelFor()
+        /// <summary>
+        /// Demonstrating use of simple parallel for :
+        /// 
+        /// Step-size is always 1
+        /// if we want some other step size, then we can modify the foreach and use it as required
+        /// <code>
+        /// Parallel.For(1, 11, a =>
+        ///    {
+        ///        Console.WriteLine($"Value : {a * 21}");
+        ///    });
+        /// </code>
+        /// 
+        /// Customizing the step-size for parallel for with foreach traversing over custom
+        /// function, which in our case is Range()
+        /// <code>
+        /// Parallel.ForEach(Range(1, 101, 5), a => { Console.WriteLine(a);});
+        /// </code>
+        /// </summary>
+        public void SimpleParallelFor()
         {
             // Step-size is always 1
             // if we want some other step size, then we can modify the foreach and use it as required
@@ -64,7 +94,10 @@ namespace PP_Console.Parallel_Collections
             Parallel.ForEach(Range(1, 101, 5), a => { Console.WriteLine(a);});
         }
 
-        private void CancellableParallelFor()
+        /// <summary>
+        /// Demonstrating Cancellable Parallel For
+        /// </summary>
+        public void CancellableParallelFor()
         {
             var cts = new CancellationTokenSource();
             var token = cts.Token;
@@ -87,13 +120,19 @@ namespace PP_Console.Parallel_Collections
             });
 
             Console.WriteLine($"Was the loop complete ? : {p_result.IsCompleted}");
-            // This owrks only with state.Break() not with token cancellation or state.Stop()
+            // This works only with state.Break() not with token cancellation or state.Stop()
             if (p_result.LowestBreakIteration.HasValue)
             {
                 Console.WriteLine($"Loop was stoped at: {p_result.LowestBreakIteration}");
             }
         }
 
+        /// <summary>
+        /// Problem Statement - How can we sum in parallel loop
+        /// maybe by interlocking every iteration such that, 
+        /// we can avoid any race condition.
+        /// But, isn't interlocking every step will add unecessary overhead and cause delays
+        /// </summary>
         public void ThreadLocalStorage()
         {
 
@@ -132,13 +171,17 @@ namespace PP_Console.Parallel_Collections
             Console.WriteLine($"Final Sum - Parallel For : {sum}");
         }
 
-        
+        /// <summary>
+        /// create a partition using 0=> starting pint, count=>exclusive end range
+        /// ,10000 => range size
+        /// Combine the parallel operation with chunks to oprimise the performance 
+        /// </summary>
         public void ThreadPartionining()
         {
             // loop counter
             const int count = 100000;
-            var values = Enumerable.Range(0, count);
-            var results = new int[count];
+            var values      = Enumerable.Range(0, count);
+            var results     = new int[count];
             // create a partition using 0=> starting pint, count=>exclusive end range
             // ,10000 => range size
             // Combine the parallel operation with chunks to oprimise the performance 
@@ -152,6 +195,9 @@ namespace PP_Console.Parallel_Collections
              });
         }
 
+        /// <summary>
+        /// Single threaded sum.
+        /// </summary>
         public void SingleThreadSum()
         {
             int sum = 0;

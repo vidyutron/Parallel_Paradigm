@@ -17,7 +17,7 @@ namespace Sync_ed
             InitializeComponent();
         }
 
-        private void btn_calculate_Click(object sender, EventArgs e)
+        public void btn_calculate_Click(object sender, EventArgs e)
         {
             int val = CalculateValue();
         }

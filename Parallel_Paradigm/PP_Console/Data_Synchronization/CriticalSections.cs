@@ -7,19 +7,36 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Data_Synchronization
 {
+    /// <summary>
+    /// Performing multi-threaded data synchronization using CRITICAL SECTIONS 
+    /// </summary>
     public class CriticalSections
     {
+        /// <summary>
+        /// Critical Section - Constructor
+        /// </summary>
         public CriticalSections()
         {
             Moderator();
         }
 
-        private void Moderator()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Moderator()
         {
             NonAtomicTransaction();
             AtomicTransaction();
         }
 
+        /// <summary>
+        /// Demonstrating the effect of thread unsafe operations through a 
+        /// thread unsafe class/interation
+        /// 
+        /// Due to core bank object being unsafe, net 
+        /// deposit and withdrawal may not cancel each other and
+        /// net balance most of the times will be non-zero
+        /// </summary>
         public void NonAtomicTransaction()
         {
             var ba = new BadBankAccount();
@@ -44,13 +61,18 @@ namespace PP_Console.Data_Synchronization
                 }));              
             }
 
-            // due to core bank object being unsafe, the net 
-            // deposit and withdrawal may not cancel each other and
-            // net balance, most of the time will ne non-zero
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine($"Final balance is {ba.Balance}");
         }
 
+        /// <summary>
+        /// Demonstrating the operation of object which supports basic 
+        /// thread locking mechanism using padlock mechanism.
+        /// 
+        /// Due to core bank object being padlock safe, the net 
+        /// deposit and withdrawal will cancel each other and
+        /// net balance will be always zero.
+        /// </summary>
         public void AtomicTransaction()
         {
             var ba = new LockedBankAccount();
@@ -74,10 +96,6 @@ namespace PP_Console.Data_Synchronization
                     }
                 }));
             }
-
-            // due to core bank object being padlock safe, the net 
-            // deposit and withdrawal will cancel each other and
-            // net balance will be always zero
             Task.WaitAll(tasks.ToArray());
             Console.WriteLine($"Final balance is {ba.Balance}");
         }

@@ -8,22 +8,37 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Task_Programming
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Cancellation_TPL : IParallelize
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Cancellation_TPL()
         {
             Moderator();
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void Moderator()
         {
             ParallelForm();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void NonParallelForm()
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Should be currently wrapped in try-catch block, will throw unhandled exception 
+        /// <code>ExplicitCancellation();</code>
+        /// </summary>
         public void ParallelForm()
         {
             SoftCancellation();
@@ -35,7 +50,15 @@ namespace PP_Console.Task_Programming
             CompositeCancellation();
         }
 
-        private void SoftCancellation()
+        /// <summary>
+        /// Soft cancellation - simply breaking out of the current 
+        /// programmtic flow, using existing means like break, continue etc.
+        /// knowledge of cancellation will be suppressed internally and 
+        /// it won't be known,outside of the task block 
+        /// *******  Not preferred way of handlig cancellation ********
+        /// 
+        /// </summary>
+        public void SoftCancellation()
         {
             // Cancellation token source
             var cts = new CancellationTokenSource();
@@ -63,7 +86,18 @@ namespace PP_Console.Task_Programming
             Console.ReadKey();
             cts.Cancel();
         }
-        private void ExplicitCancellation()
+
+        /// <summary>
+        /// An pipeline function which is invoked as soon as a cancellation is requested.
+        /// 
+        /// 
+        /// A shorthand to throw an exception when cancellation has been requested
+        /// <code>
+        /// token.ThrowIfCancellationRequested();
+        /// Console.WriteLine(++i);
+        /// </code>
+        /// </summary>
+        public void ExplicitCancellation()
         {
             var cts = new CancellationTokenSource();
             var token = cts.Token;
@@ -90,13 +124,16 @@ namespace PP_Console.Task_Programming
             cts.Cancel();
         }
 
-        private void CompositeCancellation()
+        /// <summary>
+        /// Demonstrate composite cancellation 
+        /// </summary>
+        public void CompositeCancellation()
         {
-            var planned = new CancellationTokenSource();
-            var preventitive = new CancellationTokenSource();
-            var emergency = new CancellationTokenSource();
-            var trigger = CancellationTokenSource.CreateLinkedTokenSource(
-                planned.Token, preventitive.Token, emergency.Token);
+            var planned         = new CancellationTokenSource();
+            var preventitive    = new CancellationTokenSource();
+            var emergency       = new CancellationTokenSource();
+            var trigger         = CancellationTokenSource.CreateLinkedTokenSource(
+                                    planned.Token, preventitive.Token, emergency.Token);
 
             var task = Task.Factory.StartNew(() =>
             {

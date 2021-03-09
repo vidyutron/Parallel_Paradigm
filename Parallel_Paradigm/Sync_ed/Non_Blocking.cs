@@ -33,7 +33,7 @@ namespace Sync_ed
             return 123;
         }
 
-        private void btn_calculate_Click(object sender, EventArgs e)
+        public void btn_calculate_Click(object sender, EventArgs e)
         {
             var calculation = CalculateValueFactory();
             calculation.ContinueWith(t =>
@@ -42,6 +42,25 @@ namespace Sync_ed
             },TaskScheduler.FromCurrentSynchronizationContext());
         }
 
+        /// <summary>
+        /// <code>
+        /// int result = await await Task.Factory.Startnew(
+        /// async delegate{
+        /// await Task.Delay(1000);
+        /// return 42;
+        /// },
+        /// CancellationToken.None, TaskCreationOptions.DenyChildAttach,
+        /// TaskScheduler.Default);
+        /// </code>
+        /// 
+        /// Let's understand what's hapenning above :
+        /// return 42; means return of Task<Task<int>> return at Task level
+        /// await, acts like a unwrap() of the async and its underlying return values
+        /// Now, we can see why await is used twice, as await await unwraps
+        /// Task of Task of int and gives back simply the core 123(int data type)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btn_calculate_async_ClickAsync(object sender, EventArgs e)
         {
             int value = await CalculateValueAsync();

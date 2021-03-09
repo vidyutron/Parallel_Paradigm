@@ -8,26 +8,39 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Parallel_Collections
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Producer_Consumer
     {
-        const int _blockingCount = 10;
-        //
+        private const int _blockingCount            = 10;
+        /// <summary>
+        /// Blocking Collection 
+        /// </summary>
+        public BlockingCollection<int> _messages    = new BlockingCollection<int>(new ConcurrentBag<int>(), _blockingCount);
+        private Random _random                      = new Random();
+        private CancellationTokenSource _cts        = new CancellationTokenSource();
 
-        BlockingCollection<int> _messages =
-            new BlockingCollection<int>(new ConcurrentBag<int>(), _blockingCount);
-        Random _random = new Random();
-        CancellationTokenSource _cts = new CancellationTokenSource();
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Producer_Consumer()
         {
             Moderator();
         }
 
-        private void Moderator()
+        /// <summary>
+        /// Producer Consumer Controller Method
+        /// </summary>
+        public void Moderator()
         {
             BlockingCollections();
         }
 
-        private void BlockingCollections()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void BlockingCollections()
         {
             Task.Factory.StartNew(ProduceAndConsume, _cts.Token);
             Console.ReadKey();
@@ -35,7 +48,10 @@ namespace PP_Console.Parallel_Collections
             
         }
 
-        private void ProduceAndConsume()
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ProduceAndConsume()
         {
             var producer = Task.Factory.StartNew(RunProducer);
             var consumer = Task.Factory.StartNew(RunConsumer);
@@ -54,7 +70,10 @@ namespace PP_Console.Parallel_Collections
             }
         }
 
-        private void RunProducer()
+        /// <summary>
+        /// Demonstrate Producer of theaded messages
+        /// </summary>
+        public void RunProducer()
         {
             while (true)
             {
@@ -66,7 +85,10 @@ namespace PP_Console.Parallel_Collections
             }
         }
 
-        private void RunConsumer()
+        /// <summary>
+        /// Demonstrate Consumer of theaded messages
+        /// </summary>
+        public void RunConsumer()
         {
             foreach (var item in _messages.GetConsumingEnumerable())
             {

@@ -8,29 +8,42 @@ using System.Threading.Tasks;
 
 namespace PP_Console.Data_Synchronization
 {
+    /// <summary>
+    /// Performing multi-threaded data synchronization using MUTEX 
+    /// </summary>
     public class MutexSync
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public MutexSync()
         {
             Moderator();
         }
 
-        private void Moderator()
+        /// <summary>
+        /// Controller Method
+        /// </summary>
+        public void Moderator()
         {
             IntraMutexedTransactions();
             InterMutexedTransactions();
         }
 
-        private void IntraMutexedTransactions()
+        /// <summary>
+        /// What is mutex?
+        /// 
+        /// Mutex is a synchronization primitive that grants exclusive access to the shared resource to only one thread, until released.
+        /// 
+        /// Create a ledge object which is, a combination of "BadBank"(thread unsafe class) account and its related mutex.
+        /// Here mutex facilitates modificaiton of even, out-of-sync operations what we perform in bad bank example.
+        /// </summary>
+        public void IntraMutexedTransactions()
         {
-            // Create a ledge object which is, a combination bad bank account and its related mutex, what is mutex?
-            // Mutex is a synchronization primitive that grants exclusive access to the shared resource to only one thread, until released
-            // In our case this facilitates the modificaiton of even out-of-sync operations what we perform in bad bank example
-            var account_ledger    = new Dictionary<string, BankAccountLedger>
-            { { "acc_one", new BankAccountLedger(){Account=new BadBankAccount(),AccountMutex=new Mutex()}}};
-            var tasks       = new List<Task>();
+            var account_ledger  = new Dictionary<string, BankAccountLedger>
+                                        {{ "acc_one", new BankAccountLedger(){Account=new BadBankAccount(),AccountMutex=new Mutex()}}};
+            var tasks           = new List<Task>();
 
-            //
             for (int i = 0; i < 10; i++)
             {
                 tasks.Add(Task.Factory.StartNew(() =>
@@ -74,11 +87,12 @@ namespace PP_Console.Data_Synchronization
             Console.WriteLine($"Final Balance is {account_ledger["acc_one"].Account.Balance}");
         }
 
-        private void InterMutexedTransactions()
+        /// <summary>
+        /// Little bit, different from above behviour where combinatioin of two operations where being carried out in one account.
+        /// Here we will be doing some operation between two different instances and try to maintain the exclusive lock per thread.
+        /// </summary>
+        public void InterMutexedTransactions()
         {
-            // Little different to the above beahviour where combinatioin of two operations where being carried out in one account only
-            // here we will be doing some operration between two different instances and try to maintain the exclusive lock per thread
-            // 
             var account_ledger = new Dictionary<string, BankAccountLedger>
             {{ "acc_one", new BankAccountLedger(){Account=new BadBankAccount(),AccountMutex=new Mutex()}}
             ,{ "acc_two", new BankAccountLedger(){Account=new BadBankAccount(),AccountMutex=new Mutex()}}};
@@ -132,11 +146,10 @@ namespace PP_Console.Data_Synchronization
                         try
                         {
                             account_ledger["acc_one"].Account.Transfer(account_ledger["acc_two"].Account,100);
-                            //Console.WriteLine($"Remaining balance is : {account_ledger["acc_one"].Account.Balance}");
                         }
                         finally
                         {
-                            // once done, release mutex belonging to all the accounts in this operation.
+                            // Once done, release mutex belonging to all the accounts in this operation.
                             if (haveloack) account_ledger
                                 .Select(x => x.Value.AccountMutex).ToList().ForEach(e => e.ReleaseMutex());
                         }

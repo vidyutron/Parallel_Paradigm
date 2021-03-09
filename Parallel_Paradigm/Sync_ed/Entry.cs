@@ -17,13 +17,13 @@ namespace Sync_ed
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void button1_Click(object sender, EventArgs e)
         {
             var blocking_window = new Blocking();
             blocking_window.Show();
         }
 
-        private void btn_nonblocking_Click(object sender, EventArgs e)
+        public void btn_nonblocking_Click(object sender, EventArgs e)
         {
             var non_blockingWindow = new Non_Blocking();
             non_blockingWindow.Show();
